@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Games | Mind & Well</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec game-hero"><div class="w game-hero-grid">
+<div><span class="badge">PLAY • PAUSE • RESET</span><h1 class="ph">Play, reset, and come back refreshed.</h1><p class="mu">Choose one short activity to refresh your attention, change the pace, or simply have a little fun. No scores and no pressure.</p></div>
+<img class="real-photo" src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=85" alt="People enjoying a relaxed game together">
+</div></section>
+<section class="sec"><div class="w"><div class="grid">
+<article class="card game-card"><div class="ic">✦</div><h3>Riddle Time</h3><p id="riddle">I have keys but no locks. I have space but no room. What am I?</p><button class="btn sm2" onclick="nextRiddle()">New riddle</button><p class="game-answer" id="riddleAnswer"></p></article>
+<article class="card game-card"><div class="ic">☀</div><h3>Would You Rather?</h3><p id="would">Would you rather study with your favourite music or in complete silence?</p><button class="btn sm2" onclick="nextWould()">Another choice</button></article>
+<article class="card game-card"><div class="ic">♡</div><h3>Gratitude Spark</h3><p id="gratitude">Name one small thing that made today a little better.</p><button class="btn sm2" onclick="newGratitude()">New prompt</button></article>
+<article class="card game-card"><div class="ic">●</div><h3>Focus Sprint</h3><p>Take one tiny task and focus on it for 2 minutes.</p><button class="btn sm2" id="timerBtn" onclick="startTimer()">Start 2 min</button><p class="big" id="timer">02:00</p></article>
+<article class="card game-card"><div class="ic">↔</div><h3>Word Spark</h3><p>Pick a word and make a tiny story with it.</p><button class="btn sm2" onclick="wordSpark()">Give me a word</button><p id="word" class="big"></p></article>
+<article class="card game-card"><div class="ic">☁</div><h3>Memory Mini</h3><p>Look at the symbols for 5 seconds, then try to remember them.</p><div id="memorySet" class="memory-set">☀︎  ♡  ☁︎  ★</div><button class="btn sm2" onclick="memoryGame()">New set</button><p id="memoryMsg" class="game-answer"></p></article>
+<article class="card game-card"><div class="ic">✿</div><h3>Five-Sense Hunt</h3><p>Notice one thing you can see, hear, touch, smell and taste around you.</p><button class="btn sm2" onclick="sensePrompt()">Start hunt</button><p id="sense" class="game-answer"></p></article>
+<article class="card game-card"><div class="ic">★</div><h3>Story Starter</h3><p>Get a tiny creative prompt and build a two-sentence story.</p><button class="btn sm2" onclick="storyStarter()">Give me a prompt</button><p id="story" class="game-answer"></p></article>
+</div></div></section>
+<section class="sec alt"><div class="w"><div class="note"><strong>Remember:</strong> Games are for a light reset. If you are having a difficult moment, you can use Talk & Listen or Get Support instead.</div></div></section>
+</main><div id="site-footer"></div>
+<script src="script.js"></script>
+<script>
+const riddles=[['I have keys but no locks. I have space but no room. What am I?','A keyboard.'],['What gets wetter the more it dries?','A towel.'],['What has hands but cannot clap?','A clock.']];let ri=0;
+function nextRiddle(){ri=(ri+1)%riddles.length;document.getElementById('riddle').textContent=riddles[ri][0];document.getElementById('riddleAnswer').textContent='';setTimeout(()=>document.getElementById('riddleAnswer').textContent='Answer: '+riddles[ri][1],2500)}
+const would=['Would you rather study with music or in silence?','Would you rather take a walk or listen to your favourite song?','Would you rather read a book or watch a short funny video?'];let wi=0;function nextWould(){wi=(wi+1)%would.length;document.getElementById('would').textContent=would[wi]}
+const grat=['Name one person you appreciate.','What is one small comfort you enjoyed today?','What is one thing you learned recently?','What is one place where you feel peaceful?'];function newGratitude(){document.getElementById('gratitude').textContent=grat[Math.floor(Math.random()*grat.length)]}
+const words=['rain','blue','forest','coffee','moon','friend','journey'];function wordSpark(){document.getElementById('word').textContent=words[Math.floor(Math.random()*words.length)]}
+let time=120,interval;function startTimer(){clearInterval(interval);time=120;document.getElementById('timerBtn').disabled=true;interval=setInterval(()=>{time--;document.getElementById('timer').textContent=String(Math.floor(time/60)).padStart(2,'0')+':'+String(time%60).padStart(2,'0');if(time<=0){clearInterval(interval);document.getElementById('timerBtn').disabled=false;document.getElementById('timerBtn').textContent='Start again';}},1000)}
+function memoryGame(){const symbols=['☀︎','♡','☁︎','★','✿','◆','♫','●'];let s=[...symbols].sort(()=>Math.random()-.5).slice(0,4);document.getElementById('memorySet').textContent=s.join('  ');document.getElementById('memoryMsg').textContent='Try to remember them before they change!';setTimeout(()=>{document.getElementById('memorySet').textContent='?  ?  ?  ?'},5000)}
+function sensePrompt(){const a=['Find something blue.','Notice three different sounds.','Feel the texture of something nearby.','Notice a familiar smell.','Take one slow sip of water.'];document.getElementById('sense').textContent=a[Math.floor(Math.random()*a.length)]}
+function storyStarter(){const a=['A message arrived at exactly midnight.','The quietest place on campus had a secret.','Someone left a tiny note on the library desk.','A rainy afternoon changed one ordinary plan.'];document.getElementById('story').textContent=a[Math.floor(Math.random()*a.length)]}
+</script></body></html>

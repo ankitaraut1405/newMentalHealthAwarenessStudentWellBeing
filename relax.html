@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Relax | MindCare</title><link rel="stylesheet" href="style.css">
+<style>.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:300px;margin:12px 0}.mem button{aspect-ratio:1;font-size:1.6rem;border-radius:12px;border:1px solid var(--ln);background:var(--skyl);color:var(--sky);cursor:pointer}.mem button.on{background:var(--sf)}.mem button:disabled{opacity:.6}</style></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec" id="breathing"><div class="w">
+<h1 class="ph">Relax &amp; reset</h1>
+<p class="mu">Short exercises that may help many people feel calmer. Do as much or as little as you like. If anything feels uncomfortable, stop and breathe normally.</p>
+<div class="card plain">
+<h2>Breathing trainer</h2>
+<div style="display:flex;gap:14px;flex-wrap:wrap">
+<label>Pattern<br><select id="pat"><option value="box">Box breathing 4-4-4-4</option><option value="calm">Calm breathing 4-6</option><option value="relax">Relaxing breath 4-7-8</option></select></label>
+<label>Length<br><select id="dur"><option value="1">1 minute</option><option value="2">2 minutes</option><option value="5">5 minutes</option></select></label>
+<label>How calm do you feel now? <b id="bv">5</b>/10<br><input type="range" id="before" min="1" max="10" value="5" style="width:200px"></label>
+</div>
+<div class="orb" id="orb" aria-hidden="true"></div>
+<div class="orbtxt" id="otxt" aria-live="polite"><div class="big">Ready</div><div class="mu">Sit comfortably. Press start when you are ready.</div></div>
+<div class="btns" style="justify-content:center"><button class="btn" id="bs">Start</button></div>
+<div id="after" hidden class="out"><label>How calm do you feel now? <b id="av">5</b>/10<br><input type="range" id="aft" min="1" max="10" value="5" style="width:220px"></label><div class="btns"><button class="btn o sm2" id="cmp">See the difference</button></div><p id="cres" style="margin-top:10px"></p></div>
+<div class="why"><span><b>Why it helps:</b> slow, even breaths with a longer breath out can ease the feeling of tension for many people.</span><span><b>Use it when:</b> before an exam or presentation, after a stressful message, or before bed.</span></div>
+</div>
+</div></section>
+
+<section class="sec alt"><div class="w">
+<h2>Which exercise for which moment?</h2>
+<div class="grid">
+<div class="card plain"><span class="tag">Before an exam</span><p><b>Try:</b> Box breathing for 2 minutes, then one small first step.</p></div>
+<div class="card plain"><span class="tag">Can't sleep</span><p><b>Try:</b> Relaxing breath 4-7-8 for 5 minutes, then muscle relaxation. Screens off first.</p></div>
+<div class="card plain"><span class="tag">After a fight or bad news</span><p><b>Try:</b> Calm breathing 4-6 for 2 minutes, then a short walk.</p></div>
+<div class="card plain"><span class="tag">Long study session</span><p><b>Try:</b> The stretch break every 25 to 50 minutes.</p></div>
+<div class="card plain"><span class="tag">Overthinking</span><p><b>Try:</b> Calm sounds and the memory game to give your mind a rest.</p></div>
+<div class="card plain"><span class="tag">Tense body</span><p><b>Try:</b> Progressive muscle relaxation, one group at a time.</p></div>
+</div></div></section>
+
+<section class="sec"><div class="w">
+<div class="grid" style="margin-top:0">
+<div class="card plain"><h3>Progressive muscle relaxation</h3><p id="pt"></p><div class="btns" style="margin-top:6px"><button class="btn o sm2" id="pb">Back</button><button class="btn sm2" id="pn">Next</button></div><p class="mu sm" id="pc" style="margin-top:8px"></p>
+<div class="why"><span><b>Why it helps:</b> tensing then releasing muscles helps you notice and let go of tension.</span><span><b>Use it when:</b> your shoulders, jaw or hands feel tight, or at bedtime. Skip any area that hurts.</span></div></div>
+<div class="card plain"><h3>Calm sound</h3><p>A soft, steady noise, like distant rain, to mask distractions.</p><div class="btns" style="margin-top:0"><button class="btn sm2" id="sb">Play calm sound</button></div><label class="sm mu" style="display:block;margin-top:10px">Volume <input type="range" id="vol" min="1" max="60" value="15"></label>
+<div class="why"><span><b>Why it helps:</b> steady sound can cover sudden noises that pull your attention.</span><span><b>Use it when:</b> studying, winding down or in a noisy hostel. Keep the volume low.</span></div></div>
+<div class="card plain"><h3>5-minute reset</h3><ul class="list"><li>Minute 1: pause, drop your shoulders</li><li>Minute 2: breathe gently</li><li>Minute 3: notice what is around you</li><li>Minute 4: stretch or move</li><li>Minute 5: choose one small next step</li></ul>
+<div class="why"><span><b>Use it when:</b> you feel stuck or switching between tasks.</span></div></div>
+<div class="card plain"><h3>Study-break stretch</h3><ul class="list"><li>Roll your shoulders back 5 times</li><li>Gently turn your neck side to side</li><li>Stand, reach up, then reach toward your toes</li><li>Look away from the screen for 20 seconds</li></ul>
+<div class="why"><span><b>Use it when:</b> after every 25 to 50 minutes of study. Stop if anything hurts.</span></div></div>
+</div></div></section>
+
+<section class="sec alt"><div class="w">
+<h2>Mind-refresh games</h2>
+<p class="mu">Light games to give a busy mind a short rest. Playing is optional and there is no score pressure.</p>
+<div class="grid">
+<div class="card plain"><h3>Memory match</h3><div class="mem" id="mem"></div><p class="mu sm" id="mm">Moves: 0</p><button class="btn o sm2" id="mr">New game</button></div>
+<div class="card plain"><h3>Riddle time</h3><p id="rq"></p><div class="ask" style="margin-top:0"><input id="ri" aria-label="Your answer" placeholder="Your answer"><button class="btn sm2" id="rc">Check</button></div><p id="rm" class="sm" style="margin-top:10px"></p><p class="mu sm" id="rs"></p><button class="btn o sm2" id="rn">Next riddle</button></div>
+<div class="card plain"><h3>Would you rather?</h3><p id="wq"></p><button class="btn o sm2" id="wn">Another one</button></div>
+</div></div></section>
+<section class="section"><div class="wrap"><div class="mw-games-banner"><div><h2>Want to reset with a game?</h2><p>Try a short riddle, memory challenge, word spark or focus sprint.</p></div><a class="btn" href="games.html">Play Mind Games</a></div></div></section></main>
+<div id="site-footer"></div><script src="script.js"></script>
+<script>
+const $=s=>document.getElementById(s);
+/* Breathing trainer */
+const PAT={box:[["Breathe in",4],["Hold",4],["Breathe out",4],["Hold",4]],calm:[["Breathe in",4],["Breathe out",6]],relax:[["Breathe in",4],["Hold",7],["Breathe out",8]]};
+let tm=null,el=0,tot=0,pi=0,left=0,cur=null;
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+function phase(){const[n,l]=cur[pi];left=l;$("orb").style.transitionDuration=l+"s";if(n==="Breathe in")$("orb").style.transform="scale(1)";if(n==="Breathe out")$("orb").style.transform="scale(.6)";show()}
+function show(){$("otxt").innerHTML=`<div class="big">${cur[pi][0]}</div><div class="mu">${left} &middot; ${fmt(tot-el)} left</div>`}
+function stop(msg){clearInterval(tm);tm=null;$("bs").textContent="Start";$("orb").style.transitionDuration="1.5s";$("orb").style.transform="scale(.8)";if(msg){$("otxt").innerHTML='<div class="big">Well done</div><div class="mu">Notice how your body feels now.</div>';$("after").hidden=false}else $("otxt").innerHTML='<div class="big">Paused</div><div class="mu">Press start whenever you like.</div>'}
+$("bs").onclick=()=>{if(tm){stop(false);return}
+ cur=PAT[$("pat").value];tot=+$("dur").value*60;el=0;pi=0;$("after").hidden=true;$("cres").textContent="";$("bs").textContent="Stop";phase();
+ tm=setInterval(()=>{el++;left--;if(el>=tot){stop(true);return}if(left<=0){pi=(pi+1)%cur.length;phase()}else show()},1000)};
+$("before").oninput=e=>$("bv").textContent=e.target.value;$("aft").oninput=e=>$("av").textContent=e.target.value;
+$("cmp").onclick=()=>{const b=+$("before").value,a=+$("aft").value,d=a-b;$("cres").textContent=d>0?`Before: ${b}, after: ${a}. You feel ${d} point${d>1?"s":""} calmer. Nice work.`:d===0?`Before: ${b}, after: ${a}. No change this time, which is normal. Try again, or another exercise.`:`Before: ${b}, after: ${a}. If you feel less calm, that's okay. Stop, breathe normally, or try a different exercise.`};
+/* Progressive muscle relaxation */
+const P=["Hands: make fists, squeeze for 5 seconds, then release slowly.","Arms: bend your elbows and tense your arms for 5 seconds, then let them drop.","Shoulders: lift them toward your ears for 5 seconds, then release.","Face: scrunch your face gently for 5 seconds, then soften your jaw and forehead.","Stomach: tighten your stomach muscles for 5 seconds, then release.","Legs and feet: press your feet down and tense your legs for 5 seconds, then release."];
+let pp=0;function pr(){$("pt").textContent=P[pp];$("pc").textContent=`Step ${pp+1} of ${P.length}. After each release, notice the difference for 10 seconds.`}
+$("pn").onclick=()=>{pp=(pp+1)%P.length;pr()};$("pb").onclick=()=>{pp=(pp+P.length-1)%P.length;pr()};pr();
+/* Calm sound (generated in the browser, no files needed) */
+let ac=null,src=null,gn=null;
+$("sb").onclick=()=>{if(src){src.stop();src=null;$("sb").textContent="Play calm sound";return}
+ try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume();
+ const len=ac.sampleRate*3,b=ac.createBuffer(1,len,ac.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<len;i++){l=(l+.02*(Math.random()*2-1))/1.02;d[i]=l*3.5}
+ src=ac.createBufferSource();src.buffer=b;src.loop=true;gn=ac.createGain();gn.gain.value=$("vol").value/100;src.connect(gn);gn.connect(ac.destination);src.start();$("sb").textContent="Stop sound"}catch(e){$("sb").textContent="Sound not supported"}};
+$("vol").oninput=()=>{if(gn)gn.gain.value=$("vol").value/100};
+/* Memory match */
+const SY=["\u2600","\u263E","\u2605","\u2661","\u273F","\u266A"];let cards,open,moves,done,lock;
+function mem(){cards=[...SY,...SY].sort(()=>Math.random()-.5);open=[];moves=0;done=0;lock=false;$("mm").textContent="Moves: 0";
+ $("mem").innerHTML="";cards.forEach((s,i)=>{const b=document.createElement("button");b.textContent="?";b.setAttribute("aria-label","Card "+(i+1));
+ b.onclick=()=>{if(lock||b.disabled||open.includes(i))return;b.textContent=s;b.className="on";open.push(i);
+ if(open.length===2){moves++;$("mm").textContent="Moves: "+moves;const[x,y]=open,bs=$("mem").children;
+  if(cards[x]===cards[y]){bs[x].disabled=bs[y].disabled=true;open=[];done++;if(done===SY.length)$("mm").textContent=`Matched all pairs in ${moves} moves. Well done.`}
+  else{lock=true;setTimeout(()=>{[x,y].forEach(k=>{bs[k].textContent="?";bs[k].className=""});open=[];lock=false},700)}}};$("mem").appendChild(b)})}
+$("mr").onclick=mem;mem();
+/* Riddles */
+const RD=[["What has hands but cannot clap?","clock"],["What gets wetter the more it dries?","towel"],["What has keys but cannot open locks?","piano"],["What can you catch but not throw?","cold"],["What has a face and two hands but no arms or legs?","clock"],["What comes down but never goes up?","rain"],["The more of me you take, the more you leave behind. What am I?","footstep"]];
+let ri=0,sc=0,tr=0;function rid(){$("rq").textContent=RD[ri][0];$("ri").value="";$("rm").textContent="";$("rs").textContent=`Solved: ${sc} of ${tr} tried`}
+$("rc").onclick=()=>{const v=$("ri").value.trim().toLowerCase();if(!v)return;tr++;if(v.includes(RD[ri][1])){sc++;$("rm").textContent="Correct!"}else $("rm").textContent="Not quite. The answer is: "+RD[ri][1]+".";$("rs").textContent=`Solved: ${sc} of ${tr} tried`};
+$("rn").onclick=()=>{ri=(ri+1)%RD.length;rid()};rid();
+const WY=["Would you rather have a quiet beach day or a mountain walk?","Would you rather read a book or listen to music tonight?","Would you rather always be early or always have extra time?","Would you rather have a rainy day indoors or a sunny day outside?","Would you rather cook a meal for friends or be cooked for?"];let wi=0;
+$("wq").textContent=WY[0];$("wn").onclick=()=>{wi=(wi+1)%WY.length;$("wq").textContent=WY[wi]};
+</script></body></html>

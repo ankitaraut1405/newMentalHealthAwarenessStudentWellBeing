@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Books & Resources | MindCare</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec"><div class="w">
+<h1 class="ph">Books &amp; resources</h1>
+<p class="mu">Choose how you feel and get a few ideas. Three picks at most, so you stay in control. You can also build a free mini playlist or choose a simple activity for your next break. Find books at your college library, a public library or a bookshop. We do not link to free copies of copyrighted books.</p>
+<span class="lb">I'm feeling...</span><div class="chips" id="mc"></div>
+<div id="rs" aria-live="polite"></div>
+</div></section>
+
+<section class="sec alt"><div class="w">
+<h2>Healthy habits, kept simple</h2>
+<div class="grid">
+<div class="card plain"><h3>Food</h3><p>Balanced plates, regular meals, water through the day, and simple snacks like fruit or nuts on exam days. Check allergies and your own food preferences. If you have a medical condition, ask your doctor or a dietitian.</p></div>
+<div class="card plain"><h3>Movement</h3><p>A 5 to 15 minute walk or stretch is a good start. Comfortable movement you enjoy beats a strict plan.</p></div>
+<div class="card plain"><h3>Sleep</h3><p>A regular bedtime, less screen time late at night and a short wind-down routine can help. In our survey, 84% of students slept under 7 hours.</p></div>
+</div>
+<div class="note"><p>If you notice skipping meals, extreme dieting or feeling guilty about eating, please talk to someone you trust or a professional. See <a href="support.html">Get Support</a>.</p></div>
+</div></section>
+
+<section class="sec"><div class="w">
+<h2>Starting a hard conversation</h2>
+<p class="mu">You do not need a perfect speech. The goal is simply to help the other person understand what is going on and what kind of support would feel useful.</p>
+<div class="grid">
+<div class="card plain"><h3>1. Choose a comfortable moment</h3><p>Pick a place and time where you can talk without rushing. You can also start with a message if speaking face-to-face feels difficult.</p></div>
+<div class="card plain"><h3>2. Start with “I”</h3><p>Try: “I have been feeling stressed lately,” or “I have something I want to talk about.” Speaking about your own experience can make the conversation easier to begin.</p></div>
+<div class="card plain"><h3>3. Say what you need</h3><p>You can ask for listening, practical help, study support, company, or help finding a trusted adult or professional.</p></div>
+<div class="card plain"><h3>4. If they do not understand</h3><p>Stay simple and repeat the main point. You can also choose another trusted person. One difficult conversation does not mean you have to stop looking for support.</p></div>
+</div>
+<div class="note"><strong>Example:</strong> “I do not need you to fix everything. I would like you to listen and help me think about what I can do next.”</div>
+</div></section>
+</main>
+<div id="site-footer"></div><script src="script.js"></script>
+<script>
+const M={
+"Anxious":{b:["Wherever You Go, There You Are by Jon Kabat-Zinn (mindfulness basics)","The Little Prince by Antoine de Saint-Exupery (a short, gentle read)"],m:["Slow instrumental music","Rain or nature sounds","Lo-fi without lyrics"],a:["Try the Relax page","Take a short walk","Make a 10-minute calm playlist"]},
+"Low on energy":{b:["Wings of Fire by A. P. J. Abdul Kalam (an uplifting life story)","Man's Search for Meaning by Viktor Frankl (about finding purpose)"],m:["Gentle upbeat songs","Favourite comfort playlist","Nature sounds"],a:["A 5-minute walk in daylight","A glass of water and a snack","Do one small creative activity"]},
+"Unable to focus":{b:["A Mind for Numbers by Barbara Oakley (study skills)","Atomic Habits by James Clear (building small routines)"],m:["Lo-fi study beats","Instrumental piano","Library ambience"],a:["25 minutes of focus, then a 5-minute break","Put your phone away for one short sprint","Write the first tiny step"]},
+"Lonely":{b:["Anne of Green Gables by L. M. Montgomery (comforting fiction)","The Gifts of Imperfection by Brene Brown (belonging and self-worth)"],m:["Familiar favourite songs","Songs that remind you of good memories","Soft acoustic music"],a:["Message a friend","Join a club or group activity","Sit somewhere with other people"]},
+"Can't sleep":{b:["A light, familiar novel or an audiobook"],m:["Rain sounds","Soft piano","Quiet nature ambience"],a:["Screens off 30 minutes before bed","A calm wind-down routine","Keep the room comfortable and quiet"]}};
+document.getElementById("mc").innerHTML="";
+Object.keys(M).forEach(k=>{const b=document.createElement("button");b.className="chip";b.textContent=k;b.setAttribute("aria-pressed","false");
+b.onclick=()=>{[...document.getElementById("mc").children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");
+const v=M[k],L=a=>"<ul class='list'>"+a.map(x=>"<li>"+x+"</li>").join("")+"</ul>";
+document.getElementById("rs").innerHTML=`<div class="grid"><div class="card plain"><h3>Books</h3>${L(v.b)}</div><div class="card plain"><h3>Music</h3>${L(v.m)}</div><div class="card plain"><h3>Activities</h3>${L(v.a)}</div></div>`};
+document.getElementById("mc").appendChild(b)});
+</script></body></html>

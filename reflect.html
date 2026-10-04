@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Reflect | MindCare</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec"><div class="w">
+<h1 class="ph">Reflect</h1>
+<h2>Thought Space</h2>
+<p class="mu">Write what is on your mind. Entries are saved only in this browser, are separate from the research survey, and are never sent anywhere.</p>
+<span class="lb">How are you feeling?</span><div class="chips" id="fc"></div>
+<label class="lb" for="tx">What's on your mind?</label>
+<textarea id="tx" rows="5" placeholder="Write freely. This is just for you."></textarea>
+<div class="btns"><button class="btn" id="sv">Save entry</button><button class="btn o" id="cl">Clear all my entries</button></div>
+<div id="msg" aria-live="polite"></div>
+<div id="ent"></div>
+</div></section>
+
+<section class="sec alt"><div class="w">
+<h2>Gratitude garden</h2>
+<p class="mu">Add one thing you're grateful for. Each one grows your garden. There are no streaks and no pressure.</p>
+<div class="ask"><input id="gi" aria-label="Today I'm grateful for" placeholder="Today I'm grateful for..."><button class="btn" id="ga">Add</button></div>
+<p id="gd" style="font-size:1.8rem;margin-top:14px;letter-spacing:4px" aria-label="Your garden"></p><ul class="list" id="gl"></ul>
+</div></section>
+
+<section class="sec"><div class="w">
+<h2>Starting a hard conversation</h2>
+<p class="mu">Sample sentences you can adapt for a parent, teacher or friend.</p>
+<div class="grid">
+<div class="card plain"><h3>To a parent</h3><p>"I've been feeling under a lot of pressure lately. Can we talk when you have a few minutes?"</p></div>
+<div class="card plain"><h3>To a teacher or counsellor</h3><p>"I'm finding it hard to cope and I'd like some advice on where to start."</p></div>
+<div class="card plain"><h3>To a friend</h3><p>"I haven't felt like myself. Could I tell you what's been going on?"</p></div>
+</div></div></section>
+</main>
+<div id="site-footer"></div><script src="script.js"></script>
+<script>
+const $=s=>document.querySelector(s);let feel="";
+["Calm","Happy","Worried","Stressed","Tired","Confused","Sad","Something else"].forEach(f=>{const b=document.createElement("button");b.className="chip";b.textContent=f;b.setAttribute("aria-pressed","false");
+b.onclick=()=>{[...$("#fc").children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");feel=f};$("#fc").appendChild(b)});
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function showE(){const e=st.get("mc_thoughts");$("#ent").innerHTML=e.length?"<h3 style='margin-top:24px'>Your entries</h3>"+e.map(x=>`<div class="card plain" style="margin-top:10px"><p class="mu" style="font-size:.85rem">${esc(x.d)} ${x.f?"| "+esc(x.f):""}</p><p style="margin:0;white-space:pre-wrap">${esc(x.t)}</p></div>`).join(""):""}
+$("#sv").onclick=()=>{const t=$("#tx").value.trim();if(!t){$("#msg").innerHTML='<div class="out"><p>Write a few words first.</p></div>';return}
+ const e=st.get("mc_thoughts");e.unshift({t,f:feel,d:new Date().toLocaleDateString()});st.set("mc_thoughts",e);$("#tx").value="";
+ let m="Thank you for putting that into words. Giving yourself space to pause and organise your thoughts may help you decide what you want to do next.";
+ if(SOS.test(t))m=SUP+' You can also visit <a href="support.html">Get Support</a>.';
+ $("#msg").innerHTML='<div class="out"><p>'+m+"</p></div>";showE()};
+$("#cl").onclick=()=>{if(confirm("Delete all your saved entries from this browser?")){st.clear("mc_thoughts");showE()}};
+function showG(){const g=st.get("mc_grat");$("#gd").textContent=g.map(()=>"\u{1F331}").join("");$("#gl").innerHTML=g.map(x=>"<li>"+esc(x)+"</li>").join("")}
+$("#ga").onclick=()=>{const v=$("#gi").value.trim();if(!v)return;const g=st.get("mc_grat");g.unshift(v);st.set("mc_grat",g);$("#gi").value="";showG()};
+showE();showG();
+</script></body></html>

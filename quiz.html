@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Student Quiz | MindCare</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec"><div class="w">
+<h1 class="ph">Student well-being quiz</h1>
+<p class="mu">Eight questions about the <b>last two weeks</b>. This is a self-reflection tool, not a test or a diagnosis. Your answers are not saved or sent anywhere.</p>
+<div id="qs"></div>
+<div class="btns"><button class="btn" id="sub">See my results</button><button class="btn o" id="rst">Start again</button></div>
+<div id="res" aria-live="polite"></div>
+</div></section>
+</main>
+<div id="site-footer"></div><script src="script.js"></script>
+<script>
+const Q=[["I felt tense, on edge or worried about my studies or life.","s"],["I had trouble falling asleep or staying asleep.","e"],["I felt tired or low on energy.","e"],["I found it hard to concentrate.","f"],["I felt down, or lost interest in things I usually enjoy.","m"],["I felt overwhelmed by my responsibilities.","s"],["I avoided people or felt lonely.","c"],["I felt I could talk to someone if I needed to.","c",1]];
+const OP=["Not at all","Several days","More than half the days","Nearly every day"],A=Array(Q.length).fill(null),$=s=>document.getElementById(s);
+const AREA={s:["Stress and pressure","Break tasks into small steps, take regular breaks, and try the breathing trainer on the Relax page."],e:["Sleep and energy","Keep a regular bedtime, avoid phones before bed, and take short walks in daylight."],f:["Focus","Study in 25-minute blocks with 5-minute breaks, and keep your phone out of reach."],m:["Mood and interest","Do one small enjoyable thing each day and talk to someone you trust about how you feel."],c:["Connection and support","Message one person this week, join a group, and use the conversation starters on the Reflect page."]};
+Q.forEach(([t],i)=>{const d=document.createElement("div");d.className="q";d.innerHTML=`<p>${i+1}. ${t}</p>`;const c=document.createElement("div");c.className="chips";c.style.margin=0;
+ OP.forEach((o,v)=>{const b=document.createElement("button");b.className="chip";b.textContent=o;b.setAttribute("aria-pressed","false");b.onclick=()=>{[...c.children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");A[i]=v};c.appendChild(b)});d.appendChild(c);$("qs").appendChild(d)});
+$("sub").onclick=()=>{
+ if(A.includes(null)){$("res").innerHTML='<div class="out"><p>Please answer all 8 questions to see your results.</p></div>';return}
+ const sc=A.map((v,i)=>Q[i][2]?3-v:v),tot=sc.reduce((a,b)=>a+b,0),by={};
+ Q.forEach(([,k],i)=>{by[k]=by[k]||{s:0,m:0};by[k].s+=sc[i];by[k].m+=3});
+ const lvl=tot<=6?["Doing okay","Your answers suggest low strain right now. Keep the habits that are working for you."]:tot<=13?["Some strain","Your answers suggest some strain. Small changes and talking to someone you trust may help."]:["High strain","Your answers suggest a lot of strain. Please consider talking to a counsellor, doctor or someone you trust soon."];
+ const top=Object.entries(by).sort((a,b)=>b[1].s/b[1].m-a[1].s/a[1].m).filter(e=>e[1].s>0).slice(0,2);
+ let h=`<div class="out"><h3>${lvl[0]} (${tot} of 24)</h3><p>${lvl[1]}</p></div><div class="card plain" style="margin-top:16px"><h3>Where you feel it most</h3>`+
+ Object.entries(by).map(([k,v])=>`<div class="row"><span>${AREA[k][0]}</span><span class="t g"><b style="width:${v.s/v.m*100}%"></b></span><span class="n">${v.s}/${v.m}</span></div>`).join("")+"</div>";
+ if(top.length)h+=`<div class="card plain" style="margin-top:16px"><h3>Ideas to try</h3><ul class="list">${top.map(e=>`<li><b>${AREA[e[0]][0]}:</b> ${AREA[e[0]][1]}</li>`).join("")}</ul></div>`;
+ if(tot>=14)h+='<div class="warn">If things feel heavy, you don\'t have to manage alone. Visit <a href="support.html">Get Support</a>. In India, Tele-MANAS is free and open 24/7 on 14416.</div>';
+ h+='<p class="mu sm" style="margin-top:16px">This quiz is not a diagnosis. Only a qualified professional can assess mental health. In our survey, 57% of students rated academic pressure 4 or 5 out of 5, so many students feel this way.</p>';
+ $("res").innerHTML=h;$("res").scrollIntoView({behavior:"smooth"})};
+$("rst").onclick=()=>{A.fill(null);document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed","false"));$("res").innerHTML="";window.scrollTo({top:0,behavior:"smooth"})};
+</script></body></html>

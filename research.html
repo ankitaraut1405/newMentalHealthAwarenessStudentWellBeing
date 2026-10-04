@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Research Dashboard | MindCare</title><link rel="stylesheet" href="style.css"><style>
+.gbar{margin:14px 0}.gbar-head{display:flex;justify-content:space-between;gap:10px;font-size:.9rem}.gbar-track{height:11px;border-radius:999px;background:#edf1ee;overflow:hidden;margin-top:7px}.gbar-track i{display:block;height:100%;border-radius:999px;background:#5f7f73}.gbar-track i.green{background:#6ea58f}.gbar-track i.warm{background:#b28a62}.gbar-track i.blue{background:#6289a8}
+</style>
+</head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec" style="padding-bottom:30px"><div class="w">
+<h1 class="ph">Research dashboard</h1>
+<p class="mu" style="font-size:1.08rem">What students told us about mental-health awareness and well-being. Use the filters to explore the data. The survey shows patterns in this sample. It does not show cause and effect and does not diagnose anyone.</p>
+<div class="dash">
+<h2 style="margin-bottom:.2rem">Survey overview</h2><p style="margin:0">Anonymous Google Form, 22 questions, analysed with Python.</p>
+<div class="fl"><label>Age group<select id="fa"></select></label><label>Year of study<select id="fy"></select></label></div>
+<div class="kpis" id="kpi"></div>
+<p class="sm" id="warn" style="margin:12px 0 0"></p>
+</div></div></section>
+
+<section class="sec" style="padding-top:20px"><div class="w">
+<h2>Visual summary</h2>
+<p class="mu">A quick visual view of the main patterns in the survey. These are descriptive results from the sample, not diagnoses or cause-and-effect conclusions.</p>
+<div class="grid">
+<div class="card plain"><h3>Awareness</h3><div id="graphAwareness"></div></div>
+<div class="card plain"><h3>Well-being</h3><div id="graphWellbeing"></div></div>
+<div class="card plain"><h3>Barriers to talking</h3><div id="graphBarriers"></div></div>
+</div>
+<h2>1. Awareness</h2>
+<p class="mu">Do students understand mental health, and do they know where to turn?</p>
+<div class="grid" id="g1"></div>
+<h2 style="margin-top:46px">2. Well-being</h2>
+<p class="mu">How often students feel pressure, overwhelm and tiredness (1 = low, 5 = high).</p>
+<div class="grid" id="g2"></div>
+<h2 style="margin-top:46px">3. Lifestyle</h2>
+<p class="mu">Sleep, screen time and exercise habits.</p>
+<div class="grid" id="g3"></div>
+<h2 style="margin-top:46px">4. Support and barriers</h2>
+<p class="mu">Who students would talk to, and what holds them back. People could choose more than one answer.</p>
+<div class="grid" id="g4"></div>
+</div></section>
+
+<section class="sec alt"><div class="w">
+<h2>5. Relationships between answers</h2>
+<p class="mu">Spearman rank correlation suits ratings and small samples. Values run from -1 to +1. An asterisk (*) means p &lt; 0.05 for the current filter.</p>
+<div class="grid">
+<div class="card plain"><h3>Correlations</h3><div id="cor"></div><p class="sm mu">Rule of thumb: under 0.2 very weak, 0.2 to 0.4 weak, 0.4 to 0.6 moderate, above 0.6 strong. Correlation does not mean cause.</p></div>
+<div class="card plain"><h3>Pressure vs feeling overwhelmed (number of students)</h3><div id="heat" style="overflow-x:auto"></div><p class="sm mu">Rows: academic pressure 1 to 5. Columns: feeling overwhelmed 1 to 5. Darker means more students.</p></div>
+<div class="card plain"><h3>Average feeling overwhelmed, by sleep</h3><div id="ms"></div><p class="sm mu">Average rating 1 to 5. The number of students is shown in brackets. Small groups are less reliable.</p></div>
+<div class="card plain"><h3>Average feeling overwhelmed, by exercise</h3><div id="mx"></div></div>
+</div></div></section>
+
+<section class="sec"><div class="w">
+<h2>What the findings mean</h2>
+<div class="fd"><h3>Awareness is high, but access to help is not</h3><p>Most students want more awareness, yet many don't know or aren't sure where to get help. Clear signposting, like the <a href="support.html">Get Support</a> page, matters.</p></div>
+<div class="fd"><h3>Academic pressure moves with feeling overwhelmed and tired</h3><p>Pressure, overwhelm and emotional tiredness are strongly linked. Workload, planning and exam support are likely to help.</p></div>
+<div class="fd"><h3>Knowing where to get help goes with willingness to talk</h3><p>Chi-square p &lt; 0.001. 34 of 42 students who know where to get help would talk to someone.</p></div>
+<div class="fd"><h3>Fear of judgement is the biggest barrier</h3><p>It is the most common reason students give for not talking. Private, anonymous and friendly options may lower this barrier.</p></div>
+<div class="fd"><h3>Lifestyle shows weaker links</h3><p>Exercise shows a weak link with feeling overwhelmed, while sleep and screen time show little. Broad answer bands limit what can be detected.</p></div>
+<div class="btns"><a class="btn" href="quiz.html">Take the student well-being quiz</a><a class="btn o" href="chatbot.html">Talk to the Guide</a></div>
+</div></section>
+
+<section class="sec alt"><div class="w">
+<h2>Python analysis workflow</h2>
+<ol class="list"><li><b>Collect:</b> Google Form, anonymous and voluntary</li><li><b>Export:</b> CSV dataset (74 responses, 22 questions)</li><li><b>Clean (Pandas):</b> tidy column names, standardise age groups, split multi-select answers</li><li><b>Analyse:</b> counts, percentages, cross-tabs, Spearman correlation, chi-square</li><li><b>Visualise:</b> Matplotlib in the notebook; interactive charts here</li><li><b>Report:</b> findings, limits and recommendations</li></ol>
+<h2 style="margin-top:34px">Method and limitations</h2>
+<ul class="list"><li>The sample is small (74), self-selected and mostly from two year groups, so it does not represent all students.</li><li>Answers are self-reported and are not a clinical measure.</li><li><b>Data check needed:</b> the "supported" rating moves in the same direction as feeling overwhelmed and tired, which is unexpected. This may mean the scale labels were read the other way round, so it is not interpreted as a finding.</li><li>Most open-text answers were blank, so they are not analysed here.</li><li>With small filtered groups, results can change a lot from one student.</li></ul>
+<h2 style="margin-top:34px">Privacy</h2>
+<p>The survey was anonymous and used only for this academic project. The check-in, quiz, Thought Space and Guide on this site are separate from the dataset. Saved entries stay in the visitor's own browser.</p>
+<h2>References</h2>
+<ul class="list"><li>World Health Organization (who.int), mental health pages</li><li>National Institute of Mental Health (nimh.nih.gov)</li><li>NHS mental health (nhs.uk/mental-health)</li><li>Tele-MANAS, Government of India</li></ul>
+</div></section>
+</main>
+<div id="site-footer"></div>
+<script src="data.js"></script><script src="script.js"></script>
+<script>
+const ALL=SURVEY.rows,O=SURVEY.opts,$=s=>document.getElementById(s);let F=ALL;
+const avg=a=>a.reduce((x,y)=>x+y,0)/(a.length||1),pct=(a,n)=>n?Math.round(a/n*100):0;
+function fill(id,vals){$(id).innerHTML=vals.map(v=>`<option>${v}</option>`).join("")}
+fill("fa",["All","17-18","19-21","22-24","25-27"]);fill("fy",["All","1st","2nd","3rd","Other"]);
+function bars(el,labels,counts,n,g){const m=Math.max(...counts,1);el.innerHTML=labels.map((l,i)=>`<div class="row"><span>${l}</span><span class="t${g?" g":""}"><b style="width:${counts[i]/m*100}%"></b></span><span class="n">${counts[i]} (${pct(counts[i],n)}%)</span></div>`).join("")}
+function single(k,off,len){const c=Array(len).fill(0);F.forEach(r=>c[r[k]-off]++);return c}
+function multi(k,len){const c=Array(len).fill(0);F.forEach(r=>r[k].forEach(i=>c[i]++));return c}
+const YN=["Yes","No","Not sure"],YM=["Yes","No","Maybe"],R5=["1","2","3","4","5"];
+const CH=[
+["g1","Understanding of mental health (1 to 5)","u",1,R5],["g1","Mental health is as important as physical health","i",0,YN],["g1","Anyone can experience mental-health difficulties","an",0,YN],["g1","Students need more mental-health awareness","nd",0,YN],["g1","Knows where a student can get help","k",0,YN],
+["g2","Academic pressure","p",1,R5],["g2","Feeling overwhelmed","o",1,R5],["g2","Feeling emotionally tired","e",1,R5],["g2","Feeling supported (see data note)","s",1,R5],
+["g3","Sleep per night","sl",0,["Under 5 h","5-6 h","6-7 h","7-8 h","Over 8 h"]],["g3","Screen time per day","sc",0,["Under 2 h","2-4 h","4-6 h","6-8 h","Over 8 h"]],["g3","Exercise","x",0,["Never","Rarely","1-2 days/wk","3-4 days/wk","5+ days/wk"]],
+["g4","Would talk to someone if upset","t",0,YM],["g4","Who they feel comfortable talking to","w",null,O.W],["g4","What makes it hard to talk","b",null,O.B],["g4","What helps on a difficult day","h",null,O.H]];
+CH.forEach(c=>{const d=document.createElement("div");d.className="card plain";d.innerHTML=`<h3>${c[1]}</h3><div></div>`;$(c[0]).appendChild(d)});
+function rank(a){const s=a.map((v,i)=>[v,i]).sort((x,y)=>x[0]-y[0]),r=Array(a.length);for(let i=0;i<s.length;){let j=i;while(j+1<s.length&&s[j+1][0]===s[i][0])j++;const rk=(i+j)/2+1;for(let k=i;k<=j;k++)r[s[k][1]]=rk;i=j+1}return r}
+function pear(x,y){const mx=avg(x),my=avg(y);let a=0,b=0,c=0;for(let i=0;i<x.length;i++){a+=(x[i]-mx)*(y[i]-my);b+=(x[i]-mx)**2;c+=(y[i]-my)**2}return b&&c?a/Math.sqrt(b*c):0}
+const spear=(a,b)=>pear(rank(F.map(r=>r[a])),rank(F.map(r=>r[b])));
+const PR=[["Academic pressure vs feeling overwhelmed","p","o"],["Academic pressure vs emotional tiredness","p","e"],["Feeling overwhelmed vs emotional tiredness","o","e"],["Sleep hours vs emotional tiredness","sl","e"],["Exercise vs feeling overwhelmed","x","o"],["Screen time vs feeling overwhelmed","sc","o"],["Sleep hours vs academic pressure","sl","p"]];
+function render(){
+ const a=$("fa").value,y=$("fy").value;F=ALL.filter(r=>(a==="All"||r.a===a)&&(y==="All"||r.y===y));const n=F.length;
+ $("warn").textContent=n===0?"No students match this filter. Try a different combination.":n<15?`Only ${n} students match this filter, so treat the results with care.`:`Showing ${n} of ${ALL.length} students.`;
+ const k=[[n,"students"],[pct(F.filter(r=>r.nd===0).length,n)+"%","want more awareness"],[pct(F.filter(r=>r.k!==0).length,n)+"%","don't know where to get help"],[pct(F.filter(r=>r.b.includes(0)).length,n)+"%","fear being judged"],[avg(F.map(r=>r.p)).toFixed(1),"avg academic pressure (of 5)"],[avg(F.map(r=>r.o)).toFixed(1),"avg feeling overwhelmed (of 5)"],[pct(F.filter(r=>r.sl<=2).length,n)+"%","sleep under 7 hours"]];
+ $("kpi").innerHTML=k.map(([b,t])=>`<div class="kpi"><b>${b}</b><span>${t}</span></div>`).join("");
+ const cards=[...document.querySelectorAll("#g1 .card,#g2 .card,#g3 .card,#g4 .card")];
+ CH.forEach((c,i)=>{const box=cards[i].lastElementChild,counts=c[3]===null?multi(c[2],c[4].length):single(c[2],c[3],c[4].length);bars(box,c[4],counts,n,i%2)});
+ $("cor").innerHTML=PR.map(([l,x,z])=>{const r=spear(x,z),t=n>3?r*Math.sqrt((n-2)/(1-r*r||1e-9)):0,sig=n>=10&&Math.abs(t)>=1.99;
+  return `<div class="row"><span>${l}${sig?" *":""}</span><span class="t${r<0?"":" g"}"><b style="width:${Math.min(100,Math.abs(r)*100)}%"></b></span><span class="n">${r>=0?"+":""}${r.toFixed(2)}</span></div>`}).join("");
+ const M=Array.from({length:5},()=>Array(5).fill(0));F.forEach(r=>M[r.p-1][r.o-1]++);const mx=Math.max(...M.flat(),1);
+ $("heat").innerHTML='<table class="heat"><tr><th></th>'+R5.map(v=>`<th>${v}</th>`).join("")+"</tr>"+M.map((row,i)=>`<tr><th>${i+1}</th>`+row.map(v=>`<td style="background:rgba(27,106,143,${(v/mx*.9+(v?.1:0)).toFixed(2)});color:${v/mx>.45?"#fff":"inherit"}">${v}</td>`).join("")+"</tr>").join("")+"</table>";
+ const grp=(key,labels,el)=>{el.innerHTML=labels.map((l,i)=>{const g=F.filter(r=>r[key]===i),v=g.length?avg(g.map(r=>r.o)):0;return `<div class="row"><span>${l} (${g.length})</span><span class="t"><b style="width:${v/5*100}%"></b></span><span class="n">${g.length?v.toFixed(1):"-"}</span></div>`}).join("")};
+ grp("sl",CH[9][4],$("ms"));grp("x",CH[11][4],$("mx"));
+}
+$("fa").onchange=render;$("fy").onchange=render;render();
+</script></body></html>

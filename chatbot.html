@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Mind & Well | Talk & Listen</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec"><div class="w">
+<div class="chat-hero"><div><span class="badge">LISTEN • TALK • REFLECT</span><h1 class="ph">Talk & Listen</h1><p class="mu">A supportive space for everyday conversations — good days, difficult days, study worries, friendships, family, goals, or simply whatever is on your mind.</p><span class="engine-pill" id="engine-pill">Checking Python...</span></div><img class="real-photo" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85" alt="Student using a laptop in a calm study space"></div>
+<p class="mu">You can talk about more than mental health. Share a good moment, a difficult day, study pressure, friendship problems, family worries, career confusion, or something you cannot quite put into words. This space listens first and responds to what you actually share. It is an AI, not a person, doctor or therapist, and it does not diagnose.</p>
+<div class="listen-note"><strong>Start anywhere.</strong> You do not need the “right” words. Tell me what happened, how your day went, or simply what is on your mind.</div><div class="chat">
+<div class="card plain">
+<div class="log" id="log" aria-live="polite"></div>
+<form class="ask" id="af"><input id="q" aria-label="Type your message" placeholder="Tell me how you feel, or ask a question" autocomplete="off"><button class="btn">Send</button></form>
+</div>
+<div>
+<div class="card plain"><h3>The Guide's mood</h3><div class="mood"><i id="md"></i><span id="mt">Listening</span></div><p class="sm" style="margin-top:10px">The Guide matches its tone to the emotion it senses in your message.</p></div>
+<div class="card plain" style="margin-top:16px"><h3>Engine</h3><p id="eng" class="sm">Checking for the Python server...</p></div>
+<div class="card plain" style="margin-top:16px"><h3>Try starting with</h3><div class="chips" id="tp" style="margin:0"></div></div>
+</div></div>
+<div class="warn">In crisis? Call Tele-MANAS (India, 24/7) on 14416, or 112 for emergencies. <a href="support.html">Get Support</a></div>
+</div></section>
+</main>
+<div id="site-footer"></div>
+<script src="script.js"></script><script src="intents.js"></script>
+<script>
+const $=s=>document.getElementById(s),API="",log=$("log"),hist=[];let py=false,last=null;
+const MOOD={sad:["Caring","#6a8fd0"],lonely:["Caring","#6a8fd0"],hurt:["Caring","#6a8fd0"],low:["Caring","#6a8fd0"],anxious:["Calm and steady","#2f8f83"],panic:["Calm and steady","#2f8f83"],stressed:["Calm and steady","#2f8f83"],overwhelmed:["Calm and steady","#2f8f83"],angry:["Patient","#c58a3a"],happy:["Cheerful","#d9a62e"],neutral:["Listening","#2f8f83"],tired:["Gentle","#6a8fd0"],stuck:["Encouraging","#d9a62e"],distracted:["Encouraging","#d9a62e"],pressured:["Understanding","#6a8fd0"],homesick:["Caring","#6a8fd0"],worried:["Calm and steady","#2f8f83"],caring:["Caring","#6a8fd0"],concerned:["Concerned and caring","#c58a3a"],curious:["Curious","#2f8f83"],bored:["Playful","#d9a62e"]};
+function mood(e){const m=MOOD[e]||["Listening","#2f8f83"];$("mt").textContent=m[0];$("md").style.background=m[1]}
+function say(t,u,emo,link){const p=document.createElement("p");p.textContent=t;if(u)p.className="u";
+ if(!u&&emo&&emo!=="neutral"){const s=document.createElement("small");s.textContent="Sensed: "+emo;p.appendChild(s)}
+ if(!u&&link){const a=document.createElement("a");a.href=link[1];a.textContent=link[0]+" \u2192";a.style.cssText="display:block;margin-top:6px;font-weight:700";p.appendChild(a)}
+ log.appendChild(p);log.scrollTop=log.scrollHeight}
+const esc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),pick=a=>a[Math.floor(Math.random()*a.length)];
+function match(m){let best=null,bs=0;for(const it of INTENTS.items)for(const p of it.p){if(new RegExp("\\b"+esc(p)+"\\b").test(m)){const sc=1+p.split(" ").length*.5+p.length/40;if(sc>bs){bs=sc;best=it}}}return best}
+function local(msg){const m=msg.toLowerCase().replace(/[^a-z0-9' ]/g," ");
+ if(SOS.test(msg))return{r:SUP,e:"concerned",l:["Get Support","support.html"]};
+ if(ED.test(msg))return{r:EDR,e:"concerned",l:["Get Support","support.html"]};
+ if(/^\s*(yes|yeah|yep|sure|ok|okay)\b/.test(m)&&last)return{r:"Okay. Take your time and tell me more, whenever you're ready. I'm listening.",e:last.emo};
+ if(/^\s*(no|nope|not really)\b/.test(m)&&last)return{r:"That's okay, there's no pressure. I'm here if you want to talk about anything else.",e:"neutral"};
+ const it=match(m);
+ if(it){last=it;return{r:pick(it.r)+(it.q?" "+it.q:""),e:it.emo,l:it.l}}
+ if(/\b(what|why|how|who|when|where|which)\b/.test(m))return{r:"That's outside what I can answer in offline mode, because I'm focused on student well-being. Start the Python server with an API key and I can answer a much wider range of questions. For now, you could ask me about stress, sleep, exams, loneliness, focus or relationships.",e:"neutral"};
+ if(/bad|hard|tough|difficult|upset|hurt|worst|terrible|awful|pain|cry|tired/.test(m))return{r:"That sounds hard, and I'm sorry you're going through it. Would you like to tell me more about what's happening?",e:"sad"};
+ return{r:"Thank you for sharing that. Can you tell me a little more about how you're feeling?",e:"neutral"}}
+async function reply(msg){
+ if(py){try{const r=await fetch(API+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:msg,history:hist.slice(-8)})});
+  if(r.ok){const d=await r.json();return{r:d.reply,e:d.emotion,l:d.link}}}catch(e){py=false;eng(false)}}
+ return local(msg)}
+function eng(on,llm){$("engine-pill").textContent=on?(llm?"Python + Claude connected":"Python NLP connected"):"Offline mode";$("eng").textContent=on?(llm?"Python server with Claude: connected. Wide-range answers are on.":"Python server (intent model): connected."):"Offline mode: built-in rules. Run chatbot_server.py to use the Python engine."}
+(async()=>{try{const c=new AbortController(),t=setTimeout(()=>c.abort(),1500),r=await fetch(API+"/health",{signal:c.signal});clearTimeout(t);const d=await r.json();py=!!d.ok;eng(py,d.llm)}catch(e){eng(false)}})();
+$("af").onsubmit=async e=>{e.preventDefault();const v=$("q").value.trim();if(!v)return;$("q").value="";say(v,1);
+ const d=await reply(v);setTimeout(()=>{say(d.r,0,d.e,d.l);mood(d.e);hist.push({role:"user",content:v},{role:"assistant",content:d.r})},350)};
+["I had a good day","Something is bothering me","I am stressed about exams","I had a fight with a friend","I feel lonely","I am confused about my future","I just want to talk","Give me a short game"].forEach(k=>{const b=document.createElement("button");b.className="chip";b.textContent=k;b.onclick=()=>{$("q").value=k==="Getting help"?"I need help":k==="Lonely"?"I feel lonely":k;$("af").requestSubmit()};$("tp").appendChild(b)});
+say("Hi, I'm here to listen. You can talk to me about anything that is on your mind — I’ll listen first.");
+</script></body></html>

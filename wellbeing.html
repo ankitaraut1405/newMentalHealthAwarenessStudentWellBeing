@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>My Well-Being | MindCare</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="site-header"></div>
+<main>
+<section class="sec"><div class="w">
+<h1 class="ph">My well-being</h1>
+<p class="mu">A two-minute check-in. Your answers stay on this device and are never sent anywhere. This gives general suggestions, not a diagnosis.</p>
+<p id="back" class="mu"></p>
+<span class="lb">How are you feeling?</span><div class="chips" data-g="feel"></div>
+<span class="lb">What is affecting you?</span><div class="chips" data-g="aff"></div>
+<span class="lb">Energy</span><div class="chips" data-g="en"></div>
+<span class="lb">Do you feel supported?</span><div class="chips" data-g="sup"></div>
+<label class="lb" for="pr">Academic pressure right now: <span id="prv">3</span> of 5</label>
+<input type="range" id="pr" min="1" max="5" value="3" style="width:100%;max-width:320px">
+<div class="btns"><button class="btn" id="go">See my reading</button></div>
+<div id="res" aria-live="polite"></div>
+</div></section>
+</main>
+<div id="site-footer"></div><script src="script.js"></script>
+<script>
+const O={feel:["Calm","Happy","Okay","Worried","Stressed","Tired","Confused","Low"],aff:["Studies","Family","Friends","Sleep","Future","Work","Relationships","Nothing specific"],en:["Low","Medium","Good"],sup:["Supported","Sometimes","Not much"]};
+const W={Calm:"Sunny",Happy:"Sunny",Okay:"Partly cloudy",Worried:"Cloudy",Confused:"Cloudy",Tired:"Cloudy",Stressed:"Stormy",Low:"Rainy"};
+const S={},$=s=>document.querySelector(s);
+document.querySelectorAll("[data-g]").forEach(e=>{const g=e.dataset.g;O[g].forEach(v=>{const b=document.createElement("button");b.className="chip";b.textContent=v;b.setAttribute("aria-pressed","false");
+b.onclick=()=>{[...e.children].forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");S[g]=v};e.appendChild(b)})});
+$("#pr").oninput=e=>$("#prv").textContent=e.target.value;
+const last=st.get("mc_last");if(last.length)$("#back").textContent="Welcome back! Last time your mood weather was "+last[0].w.toLowerCase()+". No pressure, just check in when you like.";
+$("#go").onclick=()=>{
+ const {feel,aff,en,sup}=S,p=+$("#pr").value;
+ if(!feel){$("#res").innerHTML='<div class="out"><p>Please choose how you are feeling first.</p></div>';return}
+ const a=[];
+ if(["Stressed","Worried"].includes(feel)||p>=4)a.push("try Pocket Calm on the <a href='relax.html'>Relax page</a>, or split one task into a smaller step");
+ if(feel==="Tired"||en==="Low")a.push("take a short break, drink some water and rest");
+ if(feel==="Confused")a.push("write what is on your mind in <a href='reflect.html'>Reflect</a> and pick one question to tackle");
+ if(feel==="Low")a.push("reach out to someone you trust");
+ if(sup==="Not much"||sup==="Sometimes")a.push("tell one person how you've been feeling");
+ if(!a.length)a.push("notice what is helping and keep it going");
+ const tiny={Stressed:"Take 3 slow deep breaths.",Worried:"Take 3 slow deep breaths.",Tired:"Drink a glass of water.",Low:"Send a short message to a friend.",Confused:"Write down one thing on your mind."}[feel]||"Step outside for two minutes.";
+ let h=`<div class="out"><p>Your mood weather: <span class="big">${W[feel]}</span></p><p>You chose <b>${feel.toLowerCase()}</b>${aff&&aff!=="Nothing specific"?` and said <b>${aff.toLowerCase()}</b> is on your mind`:""}. You could ${a.join(", or ")}.</p><p><b>One tiny action for today:</b> ${tiny}</p><p>You rated academic pressure ${p} of 5. In our survey of 74 students, the average was about 3.5.</p></div>`;
+ if(feel==="Low"&&(sup==="Not much"||en==="Low"))h+='<div class="warn">If low feelings are lasting or heavy, please consider talking to someone. Visit <a href="support.html">Get Support</a>.</div>';
+ $("#res").innerHTML=h;
+ st.set("mc_last",[{w:W[feel],d:new Date().toDateString()}])};
+</script></body></html>
